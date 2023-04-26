@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace Functional\Infrastructure\Driver\Presentation;
+namespace Clickcars\Tests\Functional\Infrastructure\Driver\Presentation;
 
 use Clickcars\Tests\Functional\Infrastructure\Driver\Presentation\ApiControllerTestBase;
 use Symfony\Component\HttpFoundation\Request;
