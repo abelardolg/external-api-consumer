@@ -1,8 +1,23 @@
 version: '3.5'
 
 services:
-  symfony-app:
-    container_name: symfony-app
+  clickcars-web:
+    container_name: clickcars-web
+    build:
+      context: ./docker/nginx
+      args:
+        UID: $U_ID
+    ports:
+      - '200:80'
+    volumes:
+      - ./public:/appdata/www/public
+    depends_on:
+      - clickcars-app
+    networks:
+      - clickcars-network
+
+  clickcars-app:
+    container_name: clickcars-app
     build:
       context: ./docker
       args:
@@ -16,31 +31,31 @@ services:
     environment:
       XDEBUG_CLIENT_HOST: 172.17.0.1
       XDEBUG_CLIENT_PORT: 9003
-      PHP_IDE_CONFIG: serverName=symfony-server
+      PHP_IDE_CONFIG: serverName=clickcars-server
     ports:
       - '1000:8000'
     networks:
-      - symfony-network
+      - clickcars-network
     depends_on:
-      - symfony-mysql
+      - clickcars-bd
 
-  symfony-mysql:
-    container_name: symfony-mysql
+  clickcars-bd:
+    container_name: clickcars-bd
     image: mysql:8.0.26
     ports:
       - '3336:3306'
     environment:
-      MYSQL_DATABASE: symfony
+      MYSQL_DATABASE: clickcars
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - symfony-mysql-data:/var/lib/mysql
+      - clickcars-data:/var/lib/mysql
     networks:
-      - symfony-network
+      - clickcars-network
     command: [ 'mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
 
 networks:
-  symfony-network:
+  clickcars-network:
 
 volumes:
-  symfony-mysql-data:
+  clickcars-data:
 
