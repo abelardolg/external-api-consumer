@@ -14,6 +14,6 @@ class ApiController
 
     public function getCharacters(Request $request): JsonResponse
     {
-        return new JsonResponse(["data" => []], Response::HTTP_OK);
+        return new JsonResponse( [], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }
