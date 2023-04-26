@@ -1,0 +1,3 @@
+rick_and_mortis:
+  resource: "routes/rick_and_mortis.yaml"
+  prefix: "api"

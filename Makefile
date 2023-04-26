@@ -1,7 +1,7 @@
 #!/bin/bash
 
-UID = $(shell id -u)
-DOCKER_BE = symfony-app
+UID=$(shell id -u)
+DOCKER_BE=clickcars-app
 
 help: ## Show this help message
 	@echo 'usage: make [target]'
