@@ -1,0 +1,61 @@
+version: '3.5'
+
+services:
+  clickcars-web:
+    container_name: clickcars-web
+    build:
+      context: ./docker/nginx
+      args:
+        UID: $U_ID
+    ports:
+      - '200:80'
+    volumes:
+      - ./public:/appdata/www/public
+    depends_on:
+      - clickcars-app
+    networks:
+      - clickcars-network
+
+  clickcars-app:
+    container_name: clickcars-app
+    build:
+      context: ./docker
+      args:
+        UID: $U_ID
+    volumes:
+      - ./:/appdata/www
+    ###> XDEBUG 3 ###
+    # Use your client IP here
+    # Linux: run "ip a | grep docker0"
+    # Windows (with WSL2) and Mac: host.docker.internal
+    environment:
+      XDEBUG_CLIENT_HOST: 172.17.0.1
+      XDEBUG_CLIENT_PORT: 9003
+      PHP_IDE_CONFIG: serverName=clickcars-server
+    ports:
+      - '1000:8000'
+    networks:
+      - clickcars-network
+    depends_on:
+      - clickcars-bd
+
+  clickcars-bd:
+    container_name: clickcars-bd
+    image: mysql:8.0.26
+    ports:
+      - '3336:3306'
+    environment:
+      MYSQL_DATABASE: clickcars
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - clickcars-data:/var/lib/mysql
+    networks:
+      - clickcars-network
+    command: [ 'mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
+
+networks:
+  clickcars-network:
+
+volumes:
+  clickcars-data:
+

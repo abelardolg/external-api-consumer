@@ -1,0 +1,4 @@
+health_check:
+  path: /health-check
+  controller:  Clickcars\Infrastructure\Driver\Presentation\HealthCheckAPIController
+  methods: [ GET ]
