@@ -22,4 +22,17 @@ class ApiControllerTest extends ApiControllerTestBase
         self::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
+    public function testWhenReturnsEmptyData(): void
+    {
+        $this->client->request(Request::METHOD_GET, self::GET_LIST_ENDPOINT);
+
+        $response = $this->client->getResponse();
+        $responseData = $this->getResponseData($response);
+
+
+        self::assertArrayHasKey("data", $responseData);
+        self::assertEquals([], $responseData["data"]);
+        self::assertEquals(Response::HTTP_OK, $response->getStatusCode());
+    }
+
 }
