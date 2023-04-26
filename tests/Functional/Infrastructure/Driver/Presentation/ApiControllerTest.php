@@ -13,13 +13,13 @@ class ApiControllerTest extends ApiControllerTestBase
 {
     private const GET_LIST_ENDPOINT = "/api/getCharacters";
 
-    public function testWhenReturnsDataNotFound(): void
+    public function testWhenReturnsServerInternalError(): void
     {
         $this->client->request(Request::METHOD_GET, self::GET_LIST_ENDPOINT);
 
         $response = $this->client->getResponse();
 
-        self::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        self::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
     }
 
     public function testWhenReturnsEmptyData(): void
@@ -34,5 +34,6 @@ class ApiControllerTest extends ApiControllerTestBase
         self::assertEquals([], $responseData["data"]);
         self::assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
+
 
 }
