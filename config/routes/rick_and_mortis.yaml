@@ -2,3 +2,7 @@ health_check:
   path: /health-check
   controller:  Clickcars\Infrastructure\Driver\Presentation\HealthCheckAPIController
   methods: [ GET ]
+get_characters:
+  path: /getCharacters
+  controller:  Clickcars\Infrastructure\Driver\Presentation\ApiController::getCharacters
+  methods: [ GET ]
