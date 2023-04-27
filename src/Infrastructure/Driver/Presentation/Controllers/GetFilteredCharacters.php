@@ -18,7 +18,7 @@ class GetFilteredCharacters extends AbstractController
 
     public function __construct(private readonly GetFilteredCharactersAPI $service) {}
 
-    public function getCharacters(GetFilteredCharactersRequestDTO $request): JsonResponse
+    public function getFilteredCharacters(GetFilteredCharactersRequestDTO $request): JsonResponse
     {
         try{
             $characters = $this->service->findFilteredCharacters($request);

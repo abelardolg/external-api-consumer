@@ -28,6 +28,7 @@ class RickAndMortyProvider implements CharactersProvider
     {
         try {
             $charactersAPI = RickAndMortyUtil::getFilteredCharacters($filter);
+
             $characters = $this->charactersMapper($charactersAPI);
         } catch(NotFoundException) {
             throw NotFoundExceptionData::fromMessage();
@@ -57,10 +58,13 @@ class RickAndMortyProvider implements CharactersProvider
     private function charactersMapper(object|array $charactersAPI): array
     {
         $characters = [];
-        foreach($charactersAPI as $characterAPI) {
+        $max_number_characters = min(count($charactersAPI), RickAndMortyUtil::NUMBER_OF_CHARACTERS);
+        for($i=0; $i<$max_number_characters; $i++) {
+            $characterAPI = $charactersAPI[$i];
+            $episode = RickAndMortyUtil::getEpisode($characterAPI);
             $toArrayOptions = [
                 "characterAPI" => $characterAPI,
-                "episodeName" => RickAndMortyUtil::getEpisode($characterAPI)->name
+                "episodeName" => $episode->name
             ];
             $characters[] = RickAndMortyUtil::toArray($toArrayOptions);
         }

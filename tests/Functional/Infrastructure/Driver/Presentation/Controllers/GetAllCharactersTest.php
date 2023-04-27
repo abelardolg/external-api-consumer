@@ -8,7 +8,7 @@ namespace Clickcars\Tests\Functional\Infrastructure\Driver\Presentation\Controll
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ApiControllerTest extends ApiControllerTestBase
+class GetAllCharactersTest extends ApiControllerTestBase
 {
     private const GET_LIST_ENDPOINT = "/api/getCharacters";
 

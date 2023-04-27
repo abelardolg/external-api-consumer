@@ -71,19 +71,31 @@ class RickAndMortyUtil
     /**
      * @throws NotFoundException
      */
-    public static function getFilteredCharacters(array $filter): array
+    public static function getFilteredCharacters(array $filter): object|array
     {
+        $STATUS_MAPPER = [
+            "dead" => Status::DEAD(),
+            "alive" => Status::ALIVE(),
+            "unknown" => Status::UNKNOWN()
+        ];
         $characterProvider = new Character();
-        $status = $filter[0];
-        if (!empty($status)) {
-            $characterProvider = $characterProvider->withStatus($status);
+        if (isset($filter["status"])) {
+            $status = $filter["status"];
+            if (!empty($status)) {
+                if (!array_key_exists($status, $STATUS_MAPPER)) {
+                    throw InvalidArgumentException::createFromMessage("Status not valid!");
+                }
+                $statusAPI = $STATUS_MAPPER[$status];
+                $characterProvider = $characterProvider->withStatus($statusAPI);
+            }
         }
-        if (2 === count($filter)) {
-            $name = $filter[1];
+
+        if (isset($filter["name"])) {
+            $name = $filter["name"];
             $characterProvider = $characterProvider->withName($name);
         }
 
-        return $characterProvider->get();
+        return $characterProvider->get()->results;
     }
 
     /**

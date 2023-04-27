@@ -20,7 +20,7 @@ class GetAllCharacters extends AbstractController
 
     public function __construct(private readonly GetAllCharactersAPI $service) {}
 
-    public function getCharacters(): JsonResponse
+    public function getAllCharacters(): JsonResponse
     {
         try{
             $characters = $this->service->findAllCharacters();
