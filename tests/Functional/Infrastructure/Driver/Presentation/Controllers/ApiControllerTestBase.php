@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Clickcars\Tests\Functional\Infrastructure\Driver\Presentation;
+namespace Clickcars\Tests\Functional\Infrastructure\Driver\Presentation\Controllers;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\AbstractBrowser;

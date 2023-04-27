@@ -3,11 +3,12 @@
 declare(strict_types=1);
 
 
-namespace Clickcars\Tests\Functional\Infrastructure\Driver\Presentation;
+namespace Clickcars\Tests\Functional\Infrastructure\Driver\Presentation\Controllers;
 
-use Clickcars\Infrastructure\Driver\Presentation\HealthCheckAPIController;
+use Clickcars\Infrastructure\Driver\Presentation\Controllers\HealthCheckAPIController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
 final class HealthCheckAPIControllerTest extends ApiControllerTestBase
 {
 
