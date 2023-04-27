@@ -7,5 +7,6 @@ namespace Clickcars\Domain\Driven;
 
 interface CharactersProvider
 {
-    public function getCharacters(array $filter): array;
+    public function findAllCharacters(): array;
+    public function findByFilter(array $filter): array;
 }

@@ -5,13 +5,16 @@ declare(strict_types=1);
 
 namespace Clickcars\Infrastructure\Utils;
 
+use Clickcars\Domain\Exceptions\InvalidArgumentException;
 use Clickcars\Domain\Exceptions\NotFoundExceptionData;
 use NickBeen\RickAndMortyPhpApi\Character;
+use NickBeen\RickAndMortyPhpApi\Enums\Status;
 use NickBeen\RickAndMortyPhpApi\Episode;
 use NickBeen\RickAndMortyPhpApi\Exceptions\NotFoundException;
 
 class RickAndMortyUtil
 {
+
     private const LAST_CHARACTER_ID = 183;
      const NUMBER_OF_CHARACTERS = 5;
     const SEEN_IN_EPISODE = 0;
@@ -29,12 +32,12 @@ class RickAndMortyUtil
         return $numbers;
     }
 
-    public static function ensureGetXRandomIds(): array
+    public static function ensureGetXRandomIds(int $numberOfCharacters): array
     {
         do {
             $randomCharacterIds = self::generateXRandomNumbers();
             $randomCharacterIds = array_unique($randomCharacterIds);
-            $thereAreXCharacters = count($randomCharacterIds) === self::NUMBER_OF_CHARACTERS;
+            $thereAreXCharacters = count($randomCharacterIds) === $numberOfCharacters;
         } while(!$thereAreXCharacters);
 
         return $randomCharacterIds;
@@ -55,19 +58,32 @@ class RickAndMortyUtil
     }
 
     /**
-     * @param array $filter a filter criteria; by default is empty
      * @return object|array a Character object | array
+     * @throws InvalidArgumentException|NotFoundException
+     */
+    public static function getCharacters(): object|array
+    {
+        $characterProvider = new Character();
+        $characterIds = self::ensureGetXRandomIds(self::NUMBER_OF_CHARACTERS);
+        return $characterProvider->get(...$characterIds);
+    }
+
+    /**
      * @throws NotFoundException
      */
-    public static function getCharacterByFilter(array $filter = []): object|array
+    public static function getFilteredCharacters(array $filter): array
     {
-        if (0 === count($filter)) {
-            $characterProvider = new Character();
-            $characterIds = self::ensureGetXRandomIds();
-            return $characterProvider->get(...$characterIds);
+        $characterProvider = new Character();
+        $status = $filter[0];
+        if (!empty($status)) {
+            $characterProvider = $characterProvider->withStatus($status);
         }
-        // To be implemented by filtering
-        return  [];
+        if (2 === count($filter)) {
+            $name = $filter[1];
+            $characterProvider = $characterProvider->withName($name);
+        }
+
+        return $characterProvider->get();
     }
 
     /**

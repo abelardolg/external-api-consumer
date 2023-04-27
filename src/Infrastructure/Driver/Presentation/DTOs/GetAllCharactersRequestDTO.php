@@ -6,18 +6,10 @@ namespace Clickcars\Infrastructure\Driver\Presentation\DTOs;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-final class GetCharactersRequestDTO implements RequestDTO
+final class GetAllCharactersRequestDTO implements RequestDTO
 {
-    private ?array $filter;
-
     public function __construct(Request $request)
     {
-        $this->filter = $request->request->get("filter");
-    }
-
-    public function filter(): ?array
-    {
-        return $this->filter;
     }
 
 }

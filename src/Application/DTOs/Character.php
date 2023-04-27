@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Clickcars\Application\DTOs;
 
-class Character implements CharacterDTO
+class Character implements CharacterDTOAPI
 {
     private ?array $filter;
 

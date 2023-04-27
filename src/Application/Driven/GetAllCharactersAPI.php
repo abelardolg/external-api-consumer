@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Clickcars\Application\Driven;
 
-interface APIService
+interface GetAllCharactersAPI
 {
-    public function getCharacters(array $filter): array;
+    public function findAllCharacters(): array;
 }

@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Clickcars\Infrastructure\Driver\Presentation\ArgumentResolvers;
 
 
-use Clickcars\Application\DTOs\CharacterDTO;
+use Clickcars\Application\DTOs\CharacterDTOAPI;
 use Clickcars\Infrastructure\Driver\Presentation\RequestTransformer\RequestTransformer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -29,7 +29,7 @@ class RequestArgumentResolver implements ValueResolverInterface
             return false;
         }
 
-        return (new \ReflectionClass($argument->getType()))->implementsInterface(CharacterDTO::class);
+        return (new \ReflectionClass($argument->getType()))->implementsInterface(CharacterDTOAPI::class);
     }
 
     public function resolve(Request $request, ArgumentMetadata $argument): \Generator

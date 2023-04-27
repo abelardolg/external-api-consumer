@@ -19,7 +19,10 @@ class RequestTransformer
     public function transform(Request $request): void
     {
         if (self::ALLOWED_CONTENT_TYPE !== $request->headers->get('Content-Type')) {
-            throw InvalidArgumentException::createFromMessage(\sprintf('[%s] is the only Content-Type allowed', self::ALLOWED_CONTENT_TYPE));
+            throw InvalidArgumentException::createFromMessage(
+                \sprintf('[%s] is the only Content-Type allowed',
+                self::ALLOWED_CONTENT_TYPE)
+            );
         }
 
         if (\in_array($request->getMethod(), self::METHODS_TO_DECODE, true)) {

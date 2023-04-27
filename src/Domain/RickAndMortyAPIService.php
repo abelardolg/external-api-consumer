@@ -5,16 +5,21 @@ declare(strict_types=1);
 
 namespace Clickcars\Domain;
 
-use Clickcars\Application\Driven\APIService;
-use Clickcars\Application\DTOs\CharacterDTO;
+use Clickcars\Application\Driven\ServiceAPI;
+use Clickcars\Application\Driver\GetAllCharactersServiceAPI;
+use Clickcars\Application\Driver\GetFilteredCharactersServiceAPI;
 use Clickcars\Domain\Driven\CharactersProvider;
 
-class RickAndMortyAPIService implements APIService
+class RickAndMortyAPIService implements GetAllCharactersServiceAPI, GetFilteredCharactersServiceAPI
 {
     public function __construct(private readonly CharactersProvider $dataProvider) {}
-    public function getCharacters(array $filter): array
+    public function findAllCharacters(): array
     {
-        return $this->dataProvider->getCharacters($filter);
+        return $this->dataProvider->findAllCharacters();
     }
 
+    public function findFilteredCharacters(array $filter): array
+    {
+        return $this->dataProvider->findByFilter($filter);
+    }
 }

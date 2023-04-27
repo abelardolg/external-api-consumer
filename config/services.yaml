@@ -18,9 +18,13 @@ services:
         resource: '../src/Application/'
         tags: [ "controller.service_arguments" ]
 
-    Clickcars\Application\Driven\Characters:
-        class: Clickcars\Application\GetCharacters
-    Clickcars\Application\Driven\CharactersProvider:
+    Clickcars\Application\Driven\GetAllCharactersAPI:
+        class: Clickcars\Application\GetAllCharacters
+    Clickcars\Application\Driven\GetFilteredCharactersAPI:
+        class: Clickcars\Application\GetFilteredCharacters
+    Clickcars\Domain\Driven\CharactersProvider:
+        class: Clickcars\Infrastructure\Driven\RickAndMortyProvider
+    Clickcars\Application\Driver\GetFilteredCharactersServiceAPI:
         class: Clickcars\Infrastructure\Driven\RickAndMortyProvider
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

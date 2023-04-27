@@ -4,5 +4,5 @@ health_check:
   methods: [ GET ]
 get_characters:
   path: /getCharacters
-  controller:  Clickcars\Infrastructure\Driver\Presentation\Controllers\ApiController::getCharacters
+  controller:  Clickcars\Infrastructure\Driver\Presentation\Controllers\GetAllCharacters::getCharacters
   methods: [ GET ]

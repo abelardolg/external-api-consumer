@@ -5,26 +5,25 @@ declare(strict_types=1);
 
 namespace Clickcars\Infrastructure\Driver\Presentation\Controllers;
 
+use Clickcars\Application\Driven\GetAllCharactersAPI;
+use Clickcars\Application\Driven\ServiceAPI;
+use Clickcars\Application\Driver\GetAllCharactersServiceAPI;
 use Clickcars\Domain\Exceptions\InvalidArgumentException;
+use Clickcars\Infrastructure\Driver\Presentation\DTOs\GetAllCharactersRequestDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-use Clickcars\Application\Driver\Characters;
-use Clickcars\Application\DTOs\Character;
-use Clickcars\Domain\Exceptions\InternalErrorException;
-use Clickcars\Infrastructure\Driver\Presentation\DTOs\GetCharactersRequestDTO;
 
-class ApiController extends AbstractController
+class GetAllCharacters extends AbstractController
 {
 
-    public function __construct(private readonly Characters $service) {}
+    public function __construct(private readonly GetAllCharactersAPI $service) {}
 
-    public function getCharacters(GetCharactersRequestDTO $request): JsonResponse
+    public function getCharacters(): JsonResponse
     {
         try{
-            $characterRequest = Character::fromFilter($request->filter());
-            $characters = $this->service->getCharacters($characterRequest);
+            $characters = $this->service->findAllCharacters();
             return new JsonResponse(["data" => $characters], Response::HTTP_OK);
         } catch(InvalidArgumentException $exception) {
             return new JsonResponse(["error" => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
