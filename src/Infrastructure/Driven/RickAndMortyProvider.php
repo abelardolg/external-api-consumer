@@ -8,17 +8,10 @@ namespace Clickcars\Infrastructure\Driven;
 use Clickcars\Domain\Driven\CharactersProvider;
 use Clickcars\Domain\Exceptions\NoDataFoundException;
 use Clickcars\Infrastructure\Utils\RickAndMortyUtil;
-use NickBeen\RickAndMortyPhpApi\Api;
 use NickBeen\RickAndMortyPhpApi\Exceptions\NotFoundException;
 
 class RickAndMortyProvider implements CharactersProvider
 {
-    private readonly Api $api;
-
-    public function __construct() {
-        $this->api = new Api();
-    }
-
     /**
      * @return array a Character collection
      * @throws NoDataFoundException
@@ -30,7 +23,7 @@ class RickAndMortyProvider implements CharactersProvider
 
             $characters = $this->charactersMapper($charactersAPI);
         } catch(NotFoundException) {
-            throw NoDataFoundException::fromMessage();
+            throw NoDataFoundException::fromNoDataFound();
         }
 
         return $characters;
@@ -41,14 +34,8 @@ class RickAndMortyProvider implements CharactersProvider
      * @throws NoDataFoundException
      */
     public function findAllCharacters(): array {
-        try {
-            $charactersAPI = RickAndMortyUtil::getCharacters();
-            $characters = $this->charactersMapper($charactersAPI);
-        } catch(NotFoundException) {
-            throw NoDataFoundException::fromNoDataFound();
-        }
-
-        return $characters;
+        $charactersAPI = RickAndMortyUtil::getCharacters();
+        return $this->charactersMapper($charactersAPI);
     }
 
     /**

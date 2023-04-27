@@ -78,26 +78,14 @@ class RickAndMortyUtil
      */
     public static function getFilteredCharacters(array $filter): object|array
     {
-        $STATUS_MAPPER = [
-            "dead" => Status::DEAD(),
-            "alive" => Status::ALIVE(),
-            "unknown" => Status::UNKNOWN()
-        ];
         $characterProvider = new Character();
         if (isset($filter["status"])) {
-            $status = $filter["status"];
-            if (!empty($status)) {
-                if (!array_key_exists($status, $STATUS_MAPPER)) {
-                    throw InvalidArgumentException::createFromMessage("Status not valid!");
-                }
-                $statusAPI = $STATUS_MAPPER[$status];
-                $characterProvider = $characterProvider->withStatus($statusAPI);
-            }
+            self::makeFilterByStatus($characterProvider, $filter["status"]);
         }
 
         if (isset($filter["name"])) {
-            $name = $filter["name"];
-            $characterProvider = $characterProvider->withName($name);
+            self::makeFilterByName($characterProvider, $filter["name"]);
+
         }
 
         return $characterProvider->get()->results;
@@ -120,5 +108,27 @@ class RickAndMortyUtil
             throw NoDataFoundException::fromNoDataFound();
         }
     }
+
+    private static function makeFilterByStatus(object $characterProvider, string $status): void
+    {
+        $STATUS_MAPPER = [
+            "dead" => Status::DEAD(),
+            "alive" => Status::ALIVE(),
+            "unknown" => Status::UNKNOWN()
+        ];
+        if (empty($status) || (!array_key_exists($status, $STATUS_MAPPER))) {
+            throw InvalidArgumentException::createFromMessage("Status not valid!");
+        }
+
+        $statusAPI = $STATUS_MAPPER[$status];
+        $characterProvider->withStatus($statusAPI);
+    }
+
+    private static function makeFilterByName(object $characterProvider, string $name): void
+    {
+        $characterProvider->withName($name);
+    }
+
+
 
 }
