@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Clickcars\Infrastructure\Utils;
 
 use Clickcars\Domain\Exceptions\InvalidArgumentException;
-use Clickcars\Domain\Exceptions\NotFoundExceptionData;
+use Clickcars\Domain\Exceptions\NoDataFoundException;
 use NickBeen\RickAndMortyPhpApi\Character;
 use NickBeen\RickAndMortyPhpApi\Enums\Status;
 use NickBeen\RickAndMortyPhpApi\Episode;
@@ -59,13 +59,18 @@ class RickAndMortyUtil
 
     /**
      * @return object|array a Character object | array
-     * @throws InvalidArgumentException|NotFoundException
+     * @throws NoDataFoundException
      */
     public static function getCharacters(): object|array
     {
         $characterProvider = new Character();
         $characterIds = self::ensureGetXRandomIds(self::NUMBER_OF_CHARACTERS);
-        return $characterProvider->get(...$characterIds);
+        try{
+            return $characterProvider->get(...$characterIds);
+        } catch(NotFoundException) {
+            throw NoDataFoundException::fromNoDataFound();
+        }
+
     }
 
     /**
@@ -101,7 +106,7 @@ class RickAndMortyUtil
     /**
      * @param object|array $characterAPI a Character from API
      * @param int $seenInEpisode a number of episode; by default is the first one.
-     * @throws NotFoundExceptionData
+     * @throws NoDataFoundException
      */
     public static function getEpisode(
         object|array $characterAPI,
@@ -112,7 +117,7 @@ class RickAndMortyUtil
         try {
             return (new Episode())->get($episodeNumber);
         } catch(NotFoundException) {
-            throw NotFoundExceptionData::fromMessage();
+            throw NoDataFoundException::fromNoDataFound();
         }
     }
 

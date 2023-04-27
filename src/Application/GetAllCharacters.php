@@ -7,6 +7,7 @@ namespace Clickcars\Application;
 
 use Clickcars\Application\Driven\GetAllCharactersAPI;
 use Clickcars\Application\Driver\GetAllCharactersServiceAPI;
+use Clickcars\Domain\Exceptions\NoDataFoundException;
 
 class GetAllCharacters implements GetAllCharactersAPI
 {
@@ -15,6 +16,7 @@ class GetAllCharacters implements GetAllCharactersAPI
 
     /**
      * @return array a Character collection
+     * @throws NoDataFoundException
      */
     public function findAllCharacters(): array
     {
