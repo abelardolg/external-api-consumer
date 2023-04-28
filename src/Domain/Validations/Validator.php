@@ -9,10 +9,11 @@ use Clickcars\Domain\Mapper\RickAndMortyMapper;
 
 class Validator
 {
-
+    const STATUS_KEY = "status";
+    const NAME_KEY = "name";
     public static function ensureBeValidFilter(array $filter): bool
     {
-        return isset($filter["status"]) || isset($filter["name"]);
+        return isset($filter[self::STATUS_KEY]) || isset($filter[self::NAME_KEY]);
     }
     public static function ensureBeValidStatus(string $status): bool
     {

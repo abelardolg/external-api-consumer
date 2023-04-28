@@ -8,8 +8,8 @@ namespace Clickcars\Infrastructure\Utils;
 use Clickcars\Domain\Exceptions\InvalidArgumentException;
 use Clickcars\Domain\Exceptions\NoDataFoundException;
 use Clickcars\Domain\Mapper\RickAndMortyMapper;
+use Clickcars\Domain\Validations\Validator;
 use NickBeen\RickAndMortyPhpApi\Character;
-use NickBeen\RickAndMortyPhpApi\Enums\Status;
 use NickBeen\RickAndMortyPhpApi\Episode;
 use NickBeen\RickAndMortyPhpApi\Exceptions\NotFoundException;
 
@@ -80,12 +80,12 @@ class RickAndMortyUtil
     public static function getFilteredCharacters(array $filter): object|array
     {
         $character = new Character();
-        if (isset($filter["status"])) {
-            self::makeFilterByStatus($character, $filter["status"]);
+        if (isset($filter[Validator::STATUS_KEY])) {
+            self::makeFilterByStatus($character, $filter[Validator::STATUS_KEY]);
         }
 
-        if (isset($filter["name"])) {
-            self::makeFilterByName($character, $filter["name"]);
+        if (isset($filter[Validator::NAME_KEY])) {
+            self::makeFilterByName($character, $filter[Validator::NAME_KEY]);
         }
         try {
             return $character->get()->results;

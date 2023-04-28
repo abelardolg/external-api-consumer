@@ -13,16 +13,14 @@ use function in_array;
 class RequestTransformer
 {
     private const ALLOWED_CONTENT_TYPE = 'application/json';
+    private const INVALID_JSON_PAYLOAD = 'Invalid JSON payload';
 
     private const METHODS_TO_DECODE = [Request::METHOD_GET];
 
     public function transform(Request $request): void
     {
         if (self::ALLOWED_CONTENT_TYPE !== $request->headers->get('Content-Type')) {
-            throw InvalidArgumentException::createFromMessage(
-                \sprintf('[%s] is the only Content-Type allowed',
-                self::ALLOWED_CONTENT_TYPE)
-            );
+            throw InvalidArgumentException::createFromContentTypeNotAllowed(self::ALLOWED_CONTENT_TYPE);
         }
 
         if (\in_array($request->getMethod(), self::METHODS_TO_DECODE, true)) {
@@ -31,7 +29,7 @@ class RequestTransformer
                     $request->getContent(), true, 512, \JSON_THROW_ON_ERROR)
                 );
             } catch (\JsonException) {
-                throw InvalidArgumentException::createFromMessage('Invalid JSON payload');
+                throw InvalidArgumentException::createFromInvalidJSONPayload(self::INVALID_JSON_PAYLOAD);
             }
         }
     }

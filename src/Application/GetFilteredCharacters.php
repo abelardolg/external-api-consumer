@@ -27,20 +27,20 @@ class GetFilteredCharacters implements GetFilteredCharactersAPI
 
         $isValidFilter = Validator::ensureBeValidFilter($filter);
         if (!$isValidFilter) {
-            throw InvalidArgumentException::createFromMessage("Filter array not valid!");
+            throw InvalidArgumentException::createFromFilterNotValid();
         }
 
-        if (isset($filter["status"])) {
-            $isValidStatus = Validator::ensureBeValidStatus($filter["status"]);
+        if (isset($filter[Validator::STATUS_KEY])) {
+            $isValidStatus = Validator::ensureBeValidStatus($filter[Validator::STATUS_KEY]);
             if (!$isValidStatus) {
-                throw InvalidArgumentException::createFromMessage("Status not valid!");
+                throw InvalidArgumentException::createFromStatusNotValid($filter[Validator::STATUS_KEY]);
             }
         }
 
-        if (isset($filter["name"])) {
-            $isValidName = Validator::ensureBeValidName($filter["name"]);
+        if (isset($filter[Validator::NAME_KEY])) {
+            $isValidName = Validator::ensureBeValidName($filter[Validator::NAME_KEY]);
             if (!$isValidName) {
-                throw InvalidArgumentException::createFromMessage("Name not valid!");
+                throw InvalidArgumentException::createFromNameNotValid();
             }
         }
 
