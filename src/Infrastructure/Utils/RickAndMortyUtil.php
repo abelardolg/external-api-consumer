@@ -7,6 +7,7 @@ namespace Clickcars\Infrastructure\Utils;
 
 use Clickcars\Domain\Exceptions\InvalidArgumentException;
 use Clickcars\Domain\Exceptions\NoDataFoundException;
+use Clickcars\Domain\Mapper\RickAndMortyMapper;
 use NickBeen\RickAndMortyPhpApi\Character;
 use NickBeen\RickAndMortyPhpApi\Enums\Status;
 use NickBeen\RickAndMortyPhpApi\Episode;
@@ -74,21 +75,24 @@ class RickAndMortyUtil
     }
 
     /**
-     * @throws NotFoundException
+     * @throws NoDataFoundException
      */
     public static function getFilteredCharacters(array $filter): object|array
     {
-        $characterProvider = new Character();
+        $character = new Character();
         if (isset($filter["status"])) {
-            self::makeFilterByStatus($characterProvider, $filter["status"]);
+            self::makeFilterByStatus($character, $filter["status"]);
         }
 
         if (isset($filter["name"])) {
-            self::makeFilterByName($characterProvider, $filter["name"]);
-
+            self::makeFilterByName($character, $filter["name"]);
+        }
+        try {
+            return $character->get()->results;
+        } catch(NotFoundException) {
+            throw NoDataFoundException::fromNoFilteredCharactersFound();
         }
 
-        return $characterProvider->get()->results;
     }
 
     /**
@@ -109,18 +113,15 @@ class RickAndMortyUtil
         }
     }
 
+    /**
+     * @param object $characterProvider
+     * @param string $status
+     * @return void
+     * @throws InvalidArgumentException
+     */
     private static function makeFilterByStatus(object $characterProvider, string $status): void
     {
-        $STATUS_MAPPER = [
-            "dead" => Status::DEAD(),
-            "alive" => Status::ALIVE(),
-            "unknown" => Status::UNKNOWN()
-        ];
-        if (empty($status) || (!array_key_exists($status, $STATUS_MAPPER))) {
-            throw InvalidArgumentException::createFromMessage("Status not valid!");
-        }
-
-        $statusAPI = $STATUS_MAPPER[$status];
+        $statusAPI = RickAndMortyMapper::returnStatusByKey($status);
         $characterProvider->withStatus($statusAPI);
     }
 
@@ -128,7 +129,5 @@ class RickAndMortyUtil
     {
         $characterProvider->withName($name);
     }
-
-
 
 }

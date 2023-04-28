@@ -8,6 +8,7 @@ namespace Clickcars\Application;
 use Clickcars\Application\Driven\GetFilteredCharactersAPI;
 use Clickcars\Domain\Exceptions\InvalidArgumentException;
 use Clickcars\Domain\RickAndMortyAPIService;
+use Clickcars\Domain\Validations\Validator;
 use Clickcars\Infrastructure\Driver\Presentation\DTOs\GetFilteredCharactersRequestDTO;
 
 class GetFilteredCharacters implements GetFilteredCharactersAPI
@@ -21,21 +22,30 @@ class GetFilteredCharacters implements GetFilteredCharactersAPI
      */
     public function findFilteredCharacters(GetFilteredCharactersRequestDTO $dto): array
     {
+
         $filter = $dto->filter();
-        $isValidFilter = $this->ensureBeValidFilter($filter);
+
+        $isValidFilter = Validator::ensureBeValidFilter($filter);
         if (!$isValidFilter) {
             throw InvalidArgumentException::createFromMessage("Filter array not valid!");
+        }
+
+        if (isset($filter["status"])) {
+            $isValidStatus = Validator::ensureBeValidStatus($filter["status"]);
+            if (!$isValidStatus) {
+                throw InvalidArgumentException::createFromMessage("Status not valid!");
+            }
+        }
+
+        if (isset($filter["name"])) {
+            $isValidName = Validator::ensureBeValidName($filter["name"]);
+            if (!$isValidName) {
+                throw InvalidArgumentException::createFromMessage("Name not valid!");
+            }
         }
 
         return $this->service->findFilteredCharacters($filter);
     }
 
-    private function ensureBeValidFilter(array $filter): bool
-    {
-        $isEmptyOrNull = empty($filter);
-        $keysNotValid = !array_key_exists("status", $filter) && !array_key_exists("name", $filter);
-
-        return !$isEmptyOrNull && !$keysNotValid;
-    }
 
 }
