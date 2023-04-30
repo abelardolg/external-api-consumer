@@ -18,6 +18,7 @@ class RickAndMortyProvider implements CharactersProvider
      */
     public function findByFilter(array $filter): array
     {
+        
         try {
             $charactersAPI = RickAndMortyUtil::getFilteredCharacters($filter);
 
@@ -53,7 +54,9 @@ class RickAndMortyProvider implements CharactersProvider
                 "episodeName" => $episode->name
             ];
             $characters[] = RickAndMortyUtil::toArray($toArrayOptions);
+
         }
+       // var_dump($characters);
         return $characters;
     }
 }

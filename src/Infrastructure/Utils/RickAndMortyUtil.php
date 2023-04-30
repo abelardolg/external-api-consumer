@@ -8,6 +8,7 @@ namespace Clickcars\Infrastructure\Utils;
 use Clickcars\Domain\Exceptions\InvalidArgumentException;
 use Clickcars\Domain\Exceptions\NoDataFoundException;
 use Clickcars\Domain\Mapper\RickAndMortyMapper;
+use Clickcars\Domain\Utils\Utils;
 use Clickcars\Domain\Validations\Validator;
 use NickBeen\RickAndMortyPhpApi\Character;
 use NickBeen\RickAndMortyPhpApi\Episode;
@@ -21,14 +22,13 @@ class RickAndMortyUtil
     const SEEN_IN_EPISODE = 0;
     public static function getEpisodeNumberFromEpisodeURL(string $episodeURL):int
     {
-        $dataFromURL = explode("/", $episodeURL);
-        return (int) $dataFromURL[count($dataFromURL)-1];
+        return Utils::getCharacterId($episodeURL);
     }
     private static function generateXRandomNumbers(): array
     {
         $numbers = [];
         for($i = 0; $i < self::NUMBER_OF_CHARACTERS; $i++) {
-            $numbers[] = rand(1, self::LAST_CHARACTER_ID);
+            $numbers[] = mt_rand(1, self::LAST_CHARACTER_ID);
         }
         return $numbers;
     }
@@ -50,6 +50,8 @@ class RickAndMortyUtil
         $episodeName = $data["episodeName"];
 
         return [
+            "id" => $characterAPI->id,
+            "status" => $characterAPI->status,
             "image" => $characterAPI->image,
             "name" => $characterAPI->name,
             "specie" => $characterAPI->species,
@@ -81,12 +83,14 @@ class RickAndMortyUtil
     {
         $character = new Character();
         if (isset($filter[Validator::STATUS_KEY])) {
+            
             self::makeFilterByStatus($character, $filter[Validator::STATUS_KEY]);
         }
 
         if (isset($filter[Validator::NAME_KEY])) {
             self::makeFilterByName($character, $filter[Validator::NAME_KEY]);
         }
+        
         try {
             return $character->get()->results;
         } catch(NotFoundException) {

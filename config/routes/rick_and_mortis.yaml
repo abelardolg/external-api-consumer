@@ -9,4 +9,4 @@ get_characters:
 get_filtered_characters:
   path: /getFilteredCharacters
   controller:  Clickcars\Infrastructure\Driver\Presentation\Controllers\GetFilteredCharacters::getFilteredCharacters
-  methods: [ GET ]
+  methods: [ POST ]

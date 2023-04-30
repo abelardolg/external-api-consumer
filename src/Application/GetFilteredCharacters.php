@@ -22,9 +22,7 @@ class GetFilteredCharacters implements GetFilteredCharactersAPI
      */
     public function findFilteredCharacters(GetFilteredCharactersRequestDTO $dto): array
     {
-
         $filter = $dto->filter();
-
         $isValidFilter = Validator::ensureBeValidFilter($filter);
         if (!$isValidFilter) {
             throw InvalidArgumentException::createFromFilterNotValid();
@@ -46,6 +44,5 @@ class GetFilteredCharacters implements GetFilteredCharactersAPI
 
         return $this->service->findFilteredCharacters($filter);
     }
-
 
 }
