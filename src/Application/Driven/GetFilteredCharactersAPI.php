@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Clickcars\Application\Driven;
 
 use Clickcars\Infrastructure\Driver\Presentation\DTOs\GetFilteredCharactersRequestDTO;

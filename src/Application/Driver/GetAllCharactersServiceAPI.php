@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Clickcars\Application\Driver;
 
 use Clickcars\Domain\Exceptions\NoDataFoundException;

@@ -2,13 +2,11 @@
 
 declare(strict_types=1);
 
-
 namespace Clickcars\Infrastructure\Driver\Presentation\RequestTransformer;
 
 use Clickcars\Domain\Exceptions\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
-use function in_array;
 
 class RequestTransformer
 {
@@ -26,7 +24,7 @@ class RequestTransformer
         if (\in_array($request->getMethod(), self::METHODS_TO_DECODE, true)) {
             try {
                 $request->request = new ParameterBag(\json_decode(
-                        $request->getContent(), true, 512, \JSON_THROW_ON_ERROR)
+                    $request->getContent(), true, 512, \JSON_THROW_ON_ERROR)
                 );
             } catch (\JsonException) {
                 throw InvalidArgumentException::createFromInvalidJSONPayload(self::INVALID_JSON_PAYLOAD);

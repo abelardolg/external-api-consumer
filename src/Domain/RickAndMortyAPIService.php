@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Clickcars\Domain;
 
 use Clickcars\Application\Driver\GetAllCharactersServiceAPI;
@@ -12,7 +11,9 @@ use Clickcars\Domain\Exceptions\NoDataFoundException;
 
 class RickAndMortyAPIService implements GetAllCharactersServiceAPI, GetFilteredCharactersServiceAPI
 {
-    public function __construct(private readonly CharactersProvider $dataProvider) {}
+    public function __construct(private readonly CharactersProvider $dataProvider)
+    {
+    }
 
     /**
      * @throws NoDataFoundException

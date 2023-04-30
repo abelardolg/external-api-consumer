@@ -10,13 +10,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GetAllCharactersTest extends WebTestCase
 {
-    private const GET_LIST_ENDPOINT = "/api/getCharacters";
+    private const GET_LIST_ENDPOINT = '/api/getCharacters';
 
     public function testWhenInitialLoadOrWhenNotFilterIsProvided(): void
     {
         $client = static::createClient();
         $NO_FILTERS_ARE_PROVIDED = [
-            "filter" => []
+            'filter' => [],
         ];
         $NUMBER_OF_CHARACTERS = 5;
         $client->request(
@@ -24,15 +24,15 @@ class GetAllCharactersTest extends WebTestCase
             self::GET_LIST_ENDPOINT,
             [],
             [],
-            array('CONTENT_TYPE' => 'application/json'),
+            ['CONTENT_TYPE' => 'application/json'],
             json_encode($NO_FILTERS_ARE_PROVIDED)
         );
 
         $response = $client->getResponse();
         $responseData = $this->getResponseData($response);
-        $characters = $responseData["data"];
+        $characters = $responseData['data'];
 
-        self::assertArrayHasKey("data", $responseData);
+        self::assertArrayHasKey('data', $responseData);
         self::assertCount($NUMBER_OF_CHARACTERS, $characters);
         self::assertEquals(Response::HTTP_OK, $response->getStatusCode());
 
@@ -43,5 +43,4 @@ class GetAllCharactersTest extends WebTestCase
     {
         return json_decode($response->getContent(), true);
     }
-
 }

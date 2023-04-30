@@ -2,14 +2,11 @@
 
 declare(strict_types=1);
 
-
 namespace Clickcars\Infrastructure\Driver\Presentation\ArgumentResolvers;
-
 
 use Clickcars\Application\DTOs\CharacterDTOAPI;
 use Clickcars\Infrastructure\Driver\Presentation\RequestTransformer\RequestTransformer;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 

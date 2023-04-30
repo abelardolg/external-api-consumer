@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-
 namespace Clickcars\Infrastructure\Listeners;
+
 use Clickcars\Domain\Exceptions\InvalidArgumentException;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;

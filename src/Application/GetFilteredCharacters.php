@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Clickcars\Application;
 
 use Clickcars\Application\Driven\GetFilteredCharactersAPI;
@@ -13,11 +12,13 @@ use Clickcars\Infrastructure\Driver\Presentation\DTOs\GetFilteredCharactersReque
 
 class GetFilteredCharacters implements GetFilteredCharactersAPI
 {
-
-    public function __construct(private readonly RickAndMortyAPIService $service) {}
+    public function __construct(private readonly RickAndMortyAPIService $service)
+    {
+    }
 
     /**
      * @param GetFilteredCharactersRequestDTO $dto an object which contains useful information
+     *
      * @return array a Character collection
      */
     public function findFilteredCharacters(GetFilteredCharactersRequestDTO $dto): array
@@ -44,5 +45,4 @@ class GetFilteredCharacters implements GetFilteredCharactersAPI
 
         return $this->service->findFilteredCharacters($filter);
     }
-
 }
